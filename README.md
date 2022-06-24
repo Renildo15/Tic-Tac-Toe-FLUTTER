@@ -1,4 +1,4 @@
-# jogo_da_velha
+# Tic Tac Toe 
 
-Jogo da velha desenvolvido em Flutter.
+Desenvolvido com Flutter. App desenvolvido como tarefa na disciplina De POO II
 
