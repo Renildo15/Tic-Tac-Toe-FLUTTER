@@ -93,7 +93,7 @@ class _GamePageState extends State<GamePage> {
     if (!_controller.tiles[index].enable) return;
 
     setState(() {
-      _controller.markBoardTileByIndex(index);
+      _controller.notifyObserver(index);
     });
 
     _checkWinner();
@@ -146,7 +146,7 @@ class _GamePageState extends State<GamePage> {
 
   _buildPlayerMode() {
     return SwitchListTile(
-      title: Text(_controller.isSinglePlayer ? 'Single Player' : 'Two Players'),
+      title: Text(_controller.isSinglePlayer ? 'Um Jogador' : 'Dois Jogadores'),
       secondary: Icon(_controller.isSinglePlayer ? Icons.person : Icons.group),
       value: _controller.isSinglePlayer,
       onChanged: (value) {

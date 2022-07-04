@@ -5,21 +5,25 @@ import 'package:jogo_da_velha/core/winner_rules.dart';
 import 'package:jogo_da_velha/enums/player_type.dart';
 import 'package:jogo_da_velha/enums/winner_type.dart';
 import 'package:jogo_da_velha/models/board_tiles.dart';
+import 'package:jogo_da_velha/models/observable.dart';
 
-
-class GameController{
+class GameController implements Observable {
   List<BoardTile> tiles = [];
   List<int> movesPlayer1 = [];
   List<int> movesPlayer2 = [];
   late PlayerType currentPlayer;
   late bool isSinglePlayer;
 
-  bool get hasMoves =>
-  (
-    movesPlayer1.length + movesPlayer2.length
-  ) != BOARD_SIZE;
+  @override
+  void register() {
+    tiles =
+        List<BoardTile>.generate(BOARD_SIZE, (index) => BoardTile(index + 1));
+  }
 
-  GameController(){
+  bool get hasMoves =>
+      (movesPlayer1.length + movesPlayer2.length) != BOARD_SIZE;
+
+  GameController() {
     _initialize();
   }
   void _initialize() {
@@ -27,15 +31,14 @@ class GameController{
     movesPlayer2.clear();
     currentPlayer = PlayerType.player1;
     isSinglePlayer = false;
-    tiles =
-        List<BoardTile>.generate(BOARD_SIZE, (index) => BoardTile(index + 1));
+    register();
   }
 
-  void reset(){
+  void reset() {
     _initialize();
   }
 
-  void markBoardTileByIndex(index) {
+  void notifyObserver(index) {
     final tile = tiles[index];
     if (currentPlayer == PlayerType.player1) {
       _markBoardTileWithPlayer1(tile);
@@ -45,17 +48,15 @@ class GameController{
 
     tile.enable = false;
   }
-  
+
   void _markBoardTileWithPlayer1(BoardTile tile) {
-    tile.symbol = PLAYER1_SYMBOL;
-    tile.color = PLAYER1_COLOR;
+    tile.update(PLAYER1_SYMBOL, PLAYER1_COLOR);
     movesPlayer1.add(tile.id);
     currentPlayer = PlayerType.player2;
   }
-  
+
   void _markBoardTileWithPlayer2(BoardTile tile) {
-    tile.symbol = PLAYER2_SYMBOL;
-    tile.color = PLAYER2_COLOR;
+    tile.update(PLAYER2_SYMBOL, PLAYER2_COLOR);
     movesPlayer2.add(tile.id);
     currentPlayer = PlayerType.player1;
   }
@@ -82,5 +83,4 @@ class GameController{
     var index = random.nextInt(list.length - 1);
     return tiles.indexWhere((tile) => tile.id == list[index]);
   }
-
 }
