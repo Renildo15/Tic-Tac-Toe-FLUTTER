@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jogo_da_velha/core/constants.dart';
 import 'package:jogo_da_velha/core/theme_app.dart';
-import 'pages/game_page.dart';
+import 'views/game_view.dart';
 
 void main() {
   runApp(MyApp());
