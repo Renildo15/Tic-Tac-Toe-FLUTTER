@@ -10,6 +10,12 @@ class BoardTile implements Observer {
   BoardTile(this.id,
       {this.symbol = '', this.color = Colors.black26, this.enable = true});
 
+  void reset() {
+    symbol = '';
+    color = Colors.black26;
+    enable = true;
+  }
+
   @override
   void update(String sym, Color col) {
     symbol = sym;
