@@ -37,6 +37,7 @@ class _GamePageState extends State<GamePage> {
           _buildBoard(),
           _buildPlayerMode(),
           _buildResetButton(),
+          _buildUndoButton(),
         ],
       ),
     );
@@ -48,6 +49,14 @@ class _GamePageState extends State<GamePage> {
       child: Text(RESET_BUTTON_LABEL),
       onPressed: _onResetGame,
     );
+  }
+
+  _buildUndoButton() {
+    return RaisedButton(
+        padding: const EdgeInsets.all(20),
+        child: Text(UNDO_BUTTON_LABEL),
+        onPressed: _onUndo,
+        color: Colors.purple);
   }
 
   _buildBoard() {
@@ -86,6 +95,12 @@ class _GamePageState extends State<GamePage> {
   _onResetGame() {
     setState(() {
       _controller.reset();
+    });
+  }
+
+  _onUndo() {
+    setState(() {
+      _controller.undo();
     });
   }
 

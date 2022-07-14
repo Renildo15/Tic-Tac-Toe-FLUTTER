@@ -16,3 +16,4 @@ const String DIALOG_MESSAGE =
 const String SINGLE_PLAYER_MODE_LABEL = 'Um Jogador';
 const String MULTIPLAYER_MODE_LABEL = 'Dois Jogadores';
 const String RESET_BUTTON_LABEL = 'RESET';
+const String UNDO_BUTTON_LABEL = 'UNDO';

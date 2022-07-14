@@ -9,6 +9,7 @@ import 'package:jogo_da_velha/models/observable.dart';
 
 class GameController implements Observable {
   List<BoardTile> tiles = [];
+  List<BoardTile> moveHistory = [];
   List<int> movesPlayer1 = [];
   List<int> movesPlayer2 = [];
   late PlayerType currentPlayer;
@@ -38,8 +39,31 @@ class GameController implements Observable {
     _initialize();
   }
 
+  void undo() {
+    if (moveHistory.isEmpty) {
+      return;
+    }
+
+    final lastTile = moveHistory.last;
+
+    lastTile.reset();
+
+    if (currentPlayer == PlayerType.player1) {
+      movesPlayer2.removeLast();
+      currentPlayer = PlayerType.player2;
+    } else {
+      movesPlayer1.removeLast();
+      currentPlayer = PlayerType.player1;
+    }
+
+    moveHistory.removeLast();
+  }
+
   void notifyObserver(index) {
     final tile = tiles[index];
+
+    moveHistory.add(tile);
+
     if (currentPlayer == PlayerType.player1) {
       _markBoardTileWithPlayer1(tile);
     } else {
