@@ -6,6 +6,8 @@ import 'package:jogo_da_velha/enums/player_type.dart';
 import 'package:jogo_da_velha/enums/winner_type.dart';
 import 'package:jogo_da_velha/models/board_tiles.dart';
 import 'package:jogo_da_velha/models/observable.dart';
+import 'package:jogo_da_velha/models/order.dart';
+import 'package:jogo_da_velha/models/undo_order.dart';
 
 class GameController implements Observable {
   List<BoardTile> tiles = [];
@@ -30,6 +32,7 @@ class GameController implements Observable {
   void _initialize() {
     movesPlayer1.clear();
     movesPlayer2.clear();
+    moveHistory.clear();
     currentPlayer = PlayerType.player1;
     isSinglePlayer = false;
     register();
@@ -40,25 +43,23 @@ class GameController implements Observable {
   }
 
   void undo() {
-    if (moveHistory.isEmpty) {
-      return;
-    }
+    var order = UndoOrder(
+        tiles, moveHistory, movesPlayer1, movesPlayer2, currentPlayer);
 
-    final lastTile = moveHistory.last;
+    execute(order);
 
-    lastTile.reset();
-
-    if (currentPlayer == PlayerType.player1) {
-      movesPlayer2.removeLast();
-      currentPlayer = PlayerType.player2;
-    } else {
-      movesPlayer1.removeLast();
-      currentPlayer = PlayerType.player1;
-    }
-
-    moveHistory.removeLast();
+    tiles = order.getTiles();
+    moveHistory = order.getMoveHistory();
+    movesPlayer1 = order.getMovesPlayer1();
+    movesPlayer2 = order.getMovesPlayer2();
+    currentPlayer = order.getCurrentPlayer();
   }
 
+  void execute(Order order) {
+    order.execute();
+  }
+
+  @override
   void notifyObserver(index) {
     final tile = tiles[index];
 

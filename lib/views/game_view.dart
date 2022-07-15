@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:jogo_da_velha/controllers/game_controller.dart';
 import 'package:jogo_da_velha/core/constants.dart';
@@ -52,11 +54,16 @@ class _GamePageState extends State<GamePage> {
   }
 
   _buildUndoButton() {
+    Color buttoncol = Colors.purple;
+    if (_controller.moveHistory.isEmpty) {
+      buttoncol = Colors.grey;
+    }
+
     return RaisedButton(
         padding: const EdgeInsets.all(20),
         child: Text(UNDO_BUTTON_LABEL),
         onPressed: _onUndo,
-        color: Colors.purple);
+        color: buttoncol);
   }
 
   _buildBoard() {
